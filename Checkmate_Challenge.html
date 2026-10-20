@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkmate Challenge — Chess Arena</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b2f;--panel2:#19243b;--text:#f4f7ff;--muted:#a9b5cc;--accent:#75e0b4;--gold:#f6c86b;--light:#e9eddf;--dark:#6f967d;--line:#293650}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0%,#1b3150 0,transparent 36%),linear-gradient(145deg,#080d19,#10192b 60%,#0b1020);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+.wrap{max-width:1180px;margin:auto;padding:28px 18px 42px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:13px}.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,var(--accent),#55a6dc);display:grid;place-items:center;color:#07101c;font-size:29px;box-shadow:0 10px 30px #65d7b42c}.eyebrow{font-size:11px;letter-spacing:.22em;color:var(--accent);font-weight:800}.brand h1{font-size:clamp(21px,4vw,30px);margin:3px 0 0;letter-spacing:-.04em}.status-pill{border:1px solid #315344;color:var(--accent);padding:9px 13px;border-radius:999px;font-size:12px;font-weight:750;white-space:nowrap}
+.hero{display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px;margin:0 0 24px}.hero h2{font-size:clamp(26px,5vw,42px);line-height:1.05;letter-spacing:-.045em;margin:0 0 10px}.hero p{margin:0;color:var(--muted);max-width:610px;line-height:1.65}.hero-tag{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.layout{display:grid;grid-template-columns:minmax(280px,1.15fr) minmax(280px,.85fr);gap:20px;align-items:start}.card{background:linear-gradient(155deg,#151f34f2,#10182af5);border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 60px #00000026}.board-card{padding:18px}.board-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.player{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;border-radius:12px;background:var(--panel2);display:grid;place-items:center;font-size:23px}.player small{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}.player strong{font-size:14px}.turn{font-size:11px;color:var(--accent);background:#17352e;padding:7px 10px;border-radius:99px}
+.board-shell{width:100%;max-width:650px;margin:auto;position:relative;padding-left:21px;padding-bottom:21px}.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1;border:5px solid #283650;border-radius:9px;overflow:hidden;box-shadow:0 14px 32px #0005}.square{position:relative;display:grid;place-items:center;aspect-ratio:1;border:0;padding:0;cursor:pointer;user-select:none}.square.light{background:var(--light)}.square.dark{background:var(--dark)}.square:focus-visible{outline:3px solid var(--gold);outline-offset:-4px;z-index:2}.piece{font-family:"Arial Unicode MS", "Segoe UI Symbol",serif;font-size:clamp(22px,5vw,49px);line-height:1;filter:drop-shadow(0 2px 1px #0002);transition:transform .12s}.piece.white{color:#fff;text-shadow:-1px -1px 0 #344052,1px -1px 0 #344052,-1px 1px 0 #344052,1px 1px 0 #344052,0 3px 3px #0004}.piece.black{color:#182130;text-shadow:0 1px 0 #c9d1d5}.square.selected{box-shadow:inset 0 0 0 5px #f6c86b}.square.last{background-image:linear-gradient(#f4d56a55,#f4d56a55)}.square.legal:after{content:"";width:24%;height:24%;border-radius:50%;background:#14251d4a;position:absolute}.square.legal.capture:after{width:84%;height:84%;border:5px solid #e9a75c;background:transparent}.coord{position:absolute;font-size:10px;font-weight:800;pointer-events:none}.file-coord{bottom:3px;right:5px;color:#14251d99}.rank-coord{top:3px;left:4px;color:#14251d99}.files{position:absolute;left:21px;right:0;bottom:0;display:grid;grid-template-columns:repeat(8,1fr);text-align:center;color:var(--muted);font-size:11px;font-weight:700}.ranks{position:absolute;top:0;bottom:21px;left:0;width:18px;display:grid;grid-template-rows:repeat(8,1fr);align-items:center;text-align:center;color:var(--muted);font-size:11px;font-weight:700}.board-foot{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px;margin:13px 2px 0}.side{display:grid;gap:16px}.controls{padding:20px}.section-title{font-size:15px;font-weight:800;margin:0 0 15px}.field{display:grid;gap:7px;margin-bottom:14px}.field label{font-size:12px;color:var(--muted);font-weight:700}.field select,.field input{width:100%;background:#0b1221;color:var(--text);border:1px solid #30405c;border-radius:12px;padding:12px;font:inherit;outline:none}.field select:focus,.field input:focus{border-color:var(--accent)}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}.btn{border:1px solid #354561;background:#202c43;color:var(--text);border-radius:12px;padding:12px 13px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:transform .12s,filter .12s}.btn:hover{filter:brightness(1.15);transform:translateY(-1px)}.btn.primary{background:linear-gradient(135deg,var(--accent),#8fe9ce);border:0;color:#07151a}.btn.wide{grid-column:1/-1}.message{padding:13px 14px;background:#0c1424;border:1px solid #283650;border-radius:13px;color:var(--muted);font-size:13px;line-height:1.5;min-height:48px}.message strong{color:var(--text)}.moves-card{padding:20px}.moves-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.moves-head h3{margin:0;font-size:15px}.count{font-size:11px;color:var(--muted);background:#202c43;border-radius:99px;padding:6px 9px}.move-list{min-height:92px;max-height:200px;overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.move-item{background:#0c1424;border:1px solid #24314a;border-radius:9px;padding:8px 10px;font-size:12px;display:flex;gap:8px}.move-num{color:#8090ac;min-width:18px}.move-san{font-weight:800}.empty{grid-column:1/-1;color:var(--muted);font-size:13px;padding:12px 2px}.tips{padding:18px 20px;color:var(--muted);font-size:12px;line-height:1.6}.tips strong{color:var(--gold)}footer{text-align:center;color:#7e8ba5;font-size:11px;margin-top:24px;line-height:1.7}.promotion{font-size:12px;color:var(--muted);margin-top:10px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.hero .status-pill{justify-self:start}.wrap{padding:20px 12px 32px}.board-card{padding:12px}.piece{font-size:clamp(22px,8vw,46px)}.top{align-items:flex-start}.status-pill{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="logo">♞</div><div><div class="eyebrow">CHESS ARENA</div><h1>CHECKMATE CHALLENGE</h1></div></div>
+    <div class="status-pill">● SIAP DIMAINKAN</div>
+  </header>
+  <section class="hero">
+    <div><div class="hero-tag">Think. Plan. Checkmate.</div><h2>Langkah cerdas.<br>Menang dengan strategi.</h2><p>Latih kemampuan caturmu melawan komputer. Pilih tingkat kesulitan, pelajari setiap langkah, dan tantang dirimu sampai skakmat.</p></div>
+    <div class="status-pill">♟ Pemain vs Komputer</div>
+  </section>
+  <main class="layout">
+    <section class="card board-card">
+      <div class="board-head">
+        <div class="player"><div class="avatar">♙</div><div><small>PEMAIN</small><strong>Putih</strong></div></div>
+        <div class="turn" id="turnPill">Giliran Putih</div>
+        <div class="player"><div class="avatar">♟</div><div><small>LAWAN AI</small><strong>Komputer</strong></div></div>
+      </div>
+      <div class="board-shell"><div class="board" id="board" role="grid" aria-label="Papan catur"></div><div class="ranks" id="ranks"></div><div class="files" id="files"></div></div>
+      <div class="board-foot"><span id="positionText">Posisi awal</span><span id="checkText">Tidak sedang skak</span></div>
+    </section>
+    <aside class="side">
+      <section class="card controls">
+        <h3 class="section-title">⚙ Pengaturan permainan</h3>
+        <div class="field"><label for="difficulty">TINGKAT KESULITAN</label><select id="difficulty"><option value="easy">Pemula — santai</option><option value="medium" selected>Menengah — seimbang</option><option value="hard">Mahir — lebih taktis</option></select></div>
+        <div class="field"><label for="color">WARNA BIDAKMU</label><select id="color"><option value="w" selected>Putih — jalan pertama</option><option value="b">Hitam — komputer mulai</option></select></div>
+        <div class="message" id="message" aria-live="polite"><strong>Selamat datang!</strong><br>Pilih pengaturan, lalu mulai permainan.</div>
+        <div class="buttons"><button class="btn primary wide" id="newGame">Mulai permainan baru</button><button class="btn" id="undo">↶ Urungkan</button><button class="btn" id="flip">⇅ Balik papan</button><button class="btn" id="hint">✦ Petunjuk</button><button class="btn" id="resign">Menyerah</button><button class="btn" id="copyPgn">Salin PGN</button></div>
+        <div class="promotion">Klik bidak lalu klik petak tujuan. Promosi pion otomatis menjadi ratu.</div>
+      </section>
+      <section class="card moves-card"><div class="moves-head"><h3>📜 Catatan langkah</h3><span class="count" id="moveCount">0 langkah</span></div><div class="move-list" id="moveList"><div class="empty">Langkahmu akan muncul di sini.</div></div></section>
+      <section class="card tips"><strong>Tip pemula</strong><br>Kontrol bagian tengah papan, keluarkan kuda dan gajah lebih awal, lalu lindungi raja dengan rokade. Tombol petunjuk memberi saran langkah legal yang tersedia.</section>
+    </aside>
+  </main>
+  <footer>CHECKMATE CHALLENGE · Game catur untuk latihan dan belajar<br>Aturan legalitas langkah ditangani oleh chess.js. AI adalah lawan komputer sederhana, bukan engine catur profesional.</footer>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const files = ['a','b','c','d','e','f','g','h'];
+  const symbols = {wk:'♔',wq:'♕',wr:'♖',wb:'♗',wn:'♘',wp:'♙',bk:'♚',bq:'♛',br:'♜',bb:'♝',bn:'♞',bp:'♟'};
+  const values = {p:100,n:320,b:330,r:500,q:900,k:20000};
+  let game = new Chess(), human = 'w', flipped = false, selected = null, legalTargets = [], lastMove = null, thinking = false, resigned = false;
+  const startFen = game.fen();
+  function sqName(r,c){ return files[c] + (8-r); }
+  function pieceSymbol(p){ return p ? symbols[p.color+p.type] : ''; }
+  function setMessage(title,body){ $('message').innerHTML = '<strong>'+title+'</strong><br>'+body; }
+  function render(){
+    const board = $('board'); board.innerHTML = '';
+    const b = game.board();
+    for(let r0=0;r0<8;r0++) for(let c0=0;c0<8;c0++){
+      const r = flipped ? 7-r0 : r0, c = flipped ? 7-c0 : c0;
+      const sq = sqName(r,c), p = b[r][c], el = document.createElement('button');
+      el.className = 'square '+((r+c)%2===0?'light':'dark');
+      if(selected===sq) el.classList.add('selected');
+      if(lastMove && (lastMove.from===sq || lastMove.to===sq)) el.classList.add('last');
+      const target = legalTargets.find(m=>m.to===sq);
+      if(target){el.classList.add('legal'); if(p) el.classList.add('capture');}
+      el.setAttribute('role','gridcell'); el.setAttribute('aria-label',sq.toUpperCase()+(p?', '+p.color+' '+p.type:''));
+      el.innerHTML = (p?'<span class="piece '+(p.color==='w'?'white':'black')+'">'+pieceSymbol(p)+'</span>':'') +
+        ((r===7)?'<span class="coord file-coord">'+files[c].toUpperCase()+'</span>':'') +
+        ((c===0)?'<span class="coord rank-coord">'+(8-r)+'</span>':'');
+      el.addEventListener('click',()=>clickSquare(sq));
+      board.appendChild(el);
+    }
+    $('files').innerHTML = (flipped?files.slice().reverse():files).map(f=>'<span>'+f.toUpperCase()+'</span>').join('');
+    $('ranks').innerHTML = Array.from({length:8},(_,i)=>'<span>'+(flipped?i+1:8-i)+'</span>').join('');
+    const side = game.turn()==='w'?'Putih':'Hitam';
+    $('turnPill').textContent = (game.game_over() || resigned) ? 'Permainan selesai' : (thinking?'Komputer berpikir…':'Giliran '+side);
+    $('positionText').textContent = 'Langkah penuh: '+game.history().length;
+    $('checkText').textContent = game.in_check()?'RAJA SEDANG SKAK':'Tidak sedang skak';
+    renderMoves();
+  }
+  function renderMoves(){
+    const hist=game.history(), list=$('moveList'); list.innerHTML='';
+    $('moveCount').textContent=hist.length+' langkah';
+    if(!hist.length){list.innerHTML='<div class="empty">Langkahmu akan muncul di sini.</div>';return;}
+    for(let i=0;i<hist.length;i+=2){
+      const row=document.createElement('div'); row.className='move-item';
+      row.innerHTML='<span class="move-num">'+(Math.floor(i/2)+1)+'.</span><span class="move-san">'+hist[i]+'</span>'+(hist[i+1]?' <span class="move-san">'+hist[i+1]+'</span>':'');
+      list.appendChild(row);
+    }
+    list.scrollTop=list.scrollHeight;
+  }
+  function gameOverMessage(){
+    if(!game.game_over()) return false;
+    if(game.in_checkmate()) setMessage('Skakmat!',(game.turn()===human?'Komputer menang.':'Kamu menang!')+' Permainan selesai.');
+    else if(game.in_draw()) setMessage('Remis','Permainan berakhir seri.');
+    else setMessage('Permainan selesai','Tidak ada langkah legal tersisa.');
+    return true;
+  }
+  function clickSquare(sq){
+    if(thinking || resigned || game.game_over() || game.turn()!==human) return;
+    const piece=game.get(sq);
+    if(selected && legalTargets.some(m=>m.to===sq)){
+      const move=game.move({from:selected,to:sq,promotion:'q'});
+      if(move){lastMove={from:move.from,to:move.to}; selected=null;legalTargets=[];render(); if(!gameOverMessage()) afterHumanMove(); return;}
+    }
+    if(piece && piece.color===human){
+      selected=sq; legalTargets=game.moves({square:sq,verbose:true}); render();
+      setMessage('Bidak dipilih', 'Pilih petak tujuan yang ditandai. Langkah ilegal tidak dapat dimainkan.');
+    }else{selected=null;legalTargets=[];render();}
+  }
+  function afterHumanMove(){
+    if(gameOverMessage()) return;
+    setMessage('Langkah tercatat','Komputer sedang memilih langkah legal…');
+    thinking=true; render();
+    setTimeout(()=>{computerMove();},260);
+  }
+  function evaluate(g, perspective){
+    let score=0, b=g.board();
+    for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+      const p=b[r][c]; if(!p) continue;
+      let v=values[p.type];
+      if(p.type==='p') v += (p.color==='w' ? 6-r : r-1)*4;
+      if(p.type==='n'||p.type==='b') v += 12 - Math.abs(3.5-c)*4 - Math.abs(3.5-r)*4;
+      score += p.color===perspective?v:-v;
+    }
+    if(g.in_check()) score += g.turn()===perspective?-18:18;
+    return score;
+  }
+  function chooseMove(){
+    const level=$('difficulty').value, moves=game.moves({verbose:true});
+    if(!moves.length) return null;
+    if(level==='easy') return moves[Math.floor(Math.random()*moves.length)];
+    let scored=[];
+    for(const m of moves){
+      game.move(m);
+      let score=-evaluate(game, game.turn());
+      if(game.in_checkmate()) score+=100000;
+      if(level==='hard' && !game.game_over()){
+        const replies=game.moves({verbose:true});
+        let worst=Infinity;
+        for(const reply of replies.slice(0,45)){
+          game.move(reply);
+          const val=evaluate(game, m.color);
+          if(val<worst) worst=val;
+          game.undo();
+          if(worst < score-500) break;
+        }
+        if(worst!==Infinity) score=worst;
+      }
+      game.undo();
+      score += Math.random()*(level==='hard'?4:45);
+      scored.push({m,score});
+    }
+    scored.sort((a,b)=>b.score-a.score);
+    const top=level==='medium'?scored.slice(0,Math.min(4,scored.length)):scored.slice(0,Math.min(2,scored.length));
+    return top[Math.floor(Math.random()*top.length)].m;
+  }
+  function computerMove(){
+    if(game.game_over()){thinking=false;render();gameOverMessage();return;}
+    const m=chooseMove();
+    if(m){const done=game.move({from:m.from,to:m.to,promotion:'q'}); if(done)lastMove={from:done.from,to:done.to};}
+    thinking=false; selected=null;legalTargets=[];render();
+    if(!gameOverMessage()) setMessage('Giliranmu!', game.in_check()?'Raja kamu sedang skak — cari langkah untuk menyelamatkannya.':'Pilih bidak dan petak tujuan. Semua langkah legal diperiksa.');
+  }
+  function startGame(){
+    game=new Chess();human=$('color').value;flipped=human==='b';selected=null;legalTargets=[];lastMove=null;thinking=false;resigned=false;
+    render();setMessage('Permainan baru','Kamu bermain sebagai '+(human==='w'?'Putih':'Hitam')+'. Tingkat: '+$('difficulty').selectedOptions[0].text+'.');
+    if(human==='b'){thinking=true;render();setTimeout(computerMove,300);}
+  }
+  $('newGame').addEventListener('click',startGame);
+  $('undo').addEventListener('click',()=>{
+    if(thinking||!game.history().length)return;
+    game.undo();
+    if(game.history().length && game.turn()!==human) game.undo();
+    lastMove=null;selected=null;legalTargets=[];render();setMessage('Langkah diurungkan','Lakukan langkah lain. Catatan langkah telah diperbarui.');
+  });
+  $('flip').addEventListener('click',()=>{flipped=!flipped;render();});
+  $('hint').addEventListener('click',()=>{
+    if(game.game_over()||resigned||game.turn()!==human||thinking){setMessage('Petunjuk belum tersedia','Tunggu giliranmu.');return;}
+    const m=chooseMove();
+    if(m) setMessage('Petunjuk','Coba pertimbangkan '+m.from.toUpperCase()+' → '+m.to.toUpperCase()+'. Ini saran komputer, bukan jaminan langkah terbaik.');
+  });
+  $('resign').addEventListener('click',()=>{
+    if(game.game_over()||thinking||resigned)return;
+    resigned=true; selected=null; legalTargets=[]; render();
+    setMessage('Menyerah','Permainan dihentikan. Klik “Mulai permainan baru” untuk mencoba lagi.');
+  });
+  $('copyPgn').addEventListener('click',async()=>{
+    const pgn=game.pgn()||'(Belum ada langkah)';
+    try{await navigator.clipboard.writeText(pgn);setMessage('PGN disalin','Catatan langkah berhasil disalin.');}
+    catch(e){setMessage('Catatan PGN',pgn.replace(/</g,'&lt;'));}
+  });
+  if(typeof Chess==='undefined'){setMessage('Gagal memuat aturan catur','Periksa koneksi internet lalu muat ulang halaman.');}
+  $('ranks').innerHTML=Array.from({length:8},(_,i)=>'<span>'+(8-i)+'</span>').join('');
+  startGame();
+})();
+</script>
+</body>
+</html>
